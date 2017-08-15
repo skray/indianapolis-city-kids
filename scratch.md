@@ -1,0 +1,11 @@
+# Features
+- Share on Facebook etc.
+- Tags/categories
+    - Restaurants
+        - Outdoor seating
+        - Price
+        - Food type
+    - Playgrounds
+        - Indoor/Outdoor
+        - Pool/splash pad
+        - Shade
