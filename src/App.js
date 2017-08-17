@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import AppBar from 'material-ui/AppBar';
 import {GridList, GridTile} from 'material-ui/GridList';
-import logo from './logo.svg';
 import './App.css';
 
 const styles = {
@@ -20,23 +20,18 @@ const styles = {
   },
 };
 
-const categories = [
-  {title: 'Events'},
-  {title: 'Playgrounds'},
-  {title: 'Restaurants'}
-];
-
 const Menu = (props) => (
-  <div style={styles.root} onClick={ () => props.onClick({title:'restaurants'}) }>
+  <div style={styles.root}>
     <GridList style={styles.gridList} cols={2.2}>
-      {categories.map((tile) => (
+      {props.menuItems.map((item) => (
         <GridTile
-          key={tile.title}
-          title={tile.title}
-          titleStyle={styles.titleStyle}
+          onClick={ () => props.onClick(item) }
+          key={item.title}
+          title={item.title}
+          titleStyle={item.titleStyle}
           titleBackground="linear-gradient(to top, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"
         >
-          <img src={tile.img} alt="{tile.title}"/>
+          <img src={`http://lorempixel.com/400/200/${item.photoCategory}`} alt="{item.title}"/>
         </GridTile>
       ))}
     </GridList>
@@ -48,49 +43,48 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      list: []
+      categories: [
+        {
+          title: 'Events',
+          photoCategory:'city',
+          items: ['Jockamo\'s', 'The Mug']
+        },
+        {
+          title: 'Playgrounds',
+          photoCategory: 'nature',
+          items: ['Ellenberger', 'Garfield']
+        },
+        {
+          title: 'Restaurants',
+          photoCategory: 'food',
+          items: ['Jazz at the Zoo', 'Halloween in Irvington']
+        }
+      ],
+      activeCategory: {items: []}
     };
   }
 
   render() {
-    let list = this.state.list
-    console.log(list)
+    let activeCategory = this.state.activeCategory
     return (
       <MuiThemeProvider>
         <div className="App">
-          <div className="App-header">
-            <img src={logo} className="App-logo" alt="logo" />
-            <h4>Things to do around Indy with your kids</h4>
-          </div>
-          <Menu onClick={(tag) => this.handleClick(tag)}></Menu>
+          <AppBar
+            title="Indianapolis City Kids"
+            iconClassNameRight="muidocs-icon-navigation-expand-more"
+            />
+          <Menu menuItems={this.state.categories} onClick={(tag) => this.handleClick(tag)}></Menu>
           <ul>
-            {list.map(item => <li key={item}>{item}</li>)}
+            {activeCategory.items.map(item => <li key={item}>{item}</li>)}
           </ul>
         </div>
       </MuiThemeProvider>
     );
   }
 
-  handleClick(tag) {
-    let list = []
-    console.log(tag)
-    switch(tag.title) {
-      case 'restaurants':
-        list = ['Jockamo\'s', 'The Mug']
-        break;
-        case 'parks':
-        list = ['Ellenberger', 'Garfield']
-        break;
-        case 'events':
-        list = ['Jazz at the Zoo', 'Halloween in Irvington']
-        break;
-        default:
-        break;
-    }
-    console.log('list is')
-    console.log(list)
+  handleClick(category) {
     this.setState({
-      list: list
+      activeCategory: category
     })
   }
 }
