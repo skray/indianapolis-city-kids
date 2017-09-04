@@ -1,121 +1,69 @@
 import React, { Component } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
-import {GridList, GridTile} from 'material-ui/GridList';
 import {List, ListItem} from 'material-ui/List';
+import Categories from './Categories';
+import categoryList from './categoryList';
 import './App.css';
+
+const styles = {
+  appBar: {
+    'box-shadow': '0 0 0'
+  },
+  header: {
+    'background-color': 'rgb(0, 188, 212)',
+    color: 'white',
+    'box-shadow': '0px 1px 6px rgba(0, 0, 0, 0.12), 0px 1px 4px rgba(0, 0, 0, 0.12)',
+    padding: '64px 64px 20px 64px'
+  },
+  mainHeaderTitle: {
+    'font-size': '4rem',
+    margin: 0,
+    opacity: 0.95
+  },
+  mainHeaderBody: {
+    'font-size': '2rem'
+  },
+  lookingForHeader: {
+    'padding': '25px 0 0 64px'
+  }
+};
 
 const ItemList = (props) => (
   <List>
     {props.items.map((item) => (
-      <ListItem primaryText={item}/>
+      <ListItem primaryText={item.name}/>
     ))}
   </List>
 );
-
-class Menu extends Component {
-
-  constructor() {
-    super();
-    this.state = {};
-    this.styles = {
-      root: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'space-around',
-        padding: '20px'
-      },
-      gridList: {
-        display: 'flex',
-        flexWrap: 'nowrap'
-      },
-      titleStyle: {
-        color: 'rgb(0, 188, 212)',
-      },
-      selected: {
-        height: '190px',
-        'box-shadow': '3px 3px 3px 0px rgba(0,0,0,0.75)'
-      },
-      hovered: {
-        filter: 'brightness(80%)',
-        cursor: 'pointer'
-      }
-    };
-  }
-
-  onMouseOver(item) {
-    this.setState({
-      hoveredItem: item
-    });
-  }
-
-  onMouseOut() {
-    this.setState({
-      hoveredItem: null
-    });
-  }
-
-  render() {
-    return (
-      <div style={this.styles.root}>
-        <GridList style={this.styles.gridList} cols={2.2}>
-          {this.props.menuItems.map((item) => (
-            <GridTile
-              style={item.selected ? this.styles.selected : null}
-              onClick={ () => this.props.onClick(item) }
-              key={item.title}
-              title={item.title}
-              titleStyle={item.titleStyle}
-              titleBackground="linear-gradient(to top, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"
-              onMouseOver={() => this.onMouseOver(item)}
-              onMouseOut={() => this.onMouseOut()}
-            >
-              <img style={item === this.state.hoveredItem ? this.styles.hovered : null} src={`http://lorempixel.com/400/200/${item.photoCategory}`} alt="{item.title}"/>
-            </GridTile>
-          ))}
-        </GridList>
-      </div>
-    )
-  }
-}
 
 class App extends Component {
 
   constructor() {
     super();
     this.state = {
-      categories: [
-        {
-          title: 'Events',
-          photoCategory:'city',
-          items: ['Jazz at the Zoo', 'Halloween in Irvington']
-        },
-        {
-          title: 'Outdoor',
-          photoCategory: 'nature',
-          items: ['Ellenberger Park', 'Garfield Park']
-        },
-        {
-          title: 'Food',
-          photoCategory: 'food',
-          items: ['Jockamo\'s', 'The Mug']
-        }
-      ],
+      categories: categoryList,
       selectedCategory: {items: []}
     };
   }
 
   render() {
-    let selectedCategory = this.state.selectedCategory
+    let selectedCategory = this.state.selectedCategory;
     return (
       <MuiThemeProvider>
         <div className="App">
           <AppBar
+            style={styles.appBar}
             title="Indianapolis City Kids"
             iconClassNameRight="muidocs-icon-navigation-expand-more"
             />
-          <Menu menuItems={this.state.categories} onClick={(tag) => this.handleClick(tag)}></Menu>
-          <ItemList items={selectedCategory.items}></ItemList>
+          <div style={styles.header}>
+            <h1 style={styles.mainHeaderTitle}>Have kids in the city?</h1>
+            <p style={styles.mainHeaderBody}>Tired of being told to drive to Fishers? We've got you covered.</p>
+          </div>
+          <h1 style={styles.lookingForHeader}>I'm looking for...</h1>
+          <Categories menuItems={this.state.categories} onClick={(tag) => this.handleClick(tag)} />
+          <ItemList items={selectedCategory.items} />
         </div>
       </MuiThemeProvider>
     );
