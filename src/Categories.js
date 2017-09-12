@@ -17,7 +17,7 @@ const styles = {
   },
   selected: {
     height: '190px',
-    'box-shadow': '3px 3px 3px 0px rgba(0,0,0,0.75)'
+    boxShadow: '3px 3px 3px 0px rgba(0,0,0,0.75)'
   },
   hovered: {
     filter: 'brightness(80%)',
