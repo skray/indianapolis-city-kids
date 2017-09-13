@@ -19,15 +19,20 @@ const styles = {
     'box-shadow': '0px 1px 6px rgba(0, 0, 0, 0.12), 0px 1px 4px rgba(0, 0, 0, 0.12)',
     padding: '64px 20px 20px 20px',
     display: 'flex',
+    fontSize: '2rem',
     flexDirection: 'row-reverse',
     justifyContent: 'space-between'
   },
   mainHeaderText: {
-    maxWidth: '188px',
-    fontSize: '1.4rem',
     height: '100%',
     margin: 'auto 0'
   },
+  mainHeaderTextMedia: css({
+    '@media(max-width: 600px)': {
+      maxWidth: '188px',
+      'font-size': '1.4rem'
+    }}
+  ),
   flag: {
     display: 'block',
     maxWidth: '400px',
@@ -87,7 +92,7 @@ class App extends Component {
             />
           <div style={styles.mainHeader}>
             <img style={styles.flag} src={flag} alt="Indianapolis Flag"/>
-            <span style={styles.mainHeaderText}>Have kids in the city? Find things to do where you are</span>
+            <span {...styles.mainHeaderTextMedia}style={styles.mainHeaderText}>Have kids in the city? Find things to do where you are.</span>
           </div>
           <h1 style={styles.lookingForHeader}>I'm looking for...</h1>
           <Categories menuItems={this.state.categories} onClick={(tag) => this.handleClick(tag)} />
